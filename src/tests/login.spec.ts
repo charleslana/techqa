@@ -1,8 +1,11 @@
 import {expect, test} from '@playwright/test';
 import {get2FACode} from '@/support/database';
 import {LoginPageObjects} from '@/pages/login-page-objects';
+import {cleanJobs, getJob} from '@/support/redis';
 
-test.describe('Testes', () => {
+test.use({headless: false});
+
+test.describe('Testes de login', () => {
     const user = {
         cpf: '01234567890',
         password: '123456'
@@ -26,8 +29,20 @@ test.describe('Testes', () => {
         await loginPage.navigate();
         await loginPage.fillFormCpf(user.cpf);
         await loginPage.fillFormPassword(user.password);
-        await page.waitForTimeout(3000);
-        const {code} = await get2FACode();
+        await page.getByRole('heading', {name: 'Verificação em duas etapas'}).waitFor({timeout: 3000});
+        // await page.waitForTimeout(3000);
+        const {code} = await get2FACode(user.cpf);
+        await loginPage.fillForm2FA(code);
+        await expect(loginPage.getBalance()).toHaveText('R$ 5.000,00');
+    });
+
+    test('Deve acessar a conta do usuário com redis', async ({page}) => {
+        await cleanJobs();
+        await loginPage.navigate();
+        await loginPage.fillFormCpf(user.cpf);
+        await loginPage.fillFormPassword(user.password);
+        await page.getByRole('heading', {name: 'Verificação em duas etapas'}).waitFor({timeout: 3000});
+        const {code} = await getJob();
         await loginPage.fillForm2FA(code);
         await expect(loginPage.getBalance()).toHaveText('R$ 5.000,00');
     });

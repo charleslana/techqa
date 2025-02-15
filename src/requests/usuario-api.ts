@@ -4,6 +4,6 @@ import {UsuarioInterface} from '@/interfaces/usuario-interface';
 
 export class UsuarioApi extends ApiBase {
     public async cadastrarUsuario(usuario: UsuarioInterface): Promise<APIResponse> {
-        return this.post<UsuarioInterface>('/usuarios', usuario);
+        return await this.post<UsuarioInterface>('/usuarios', usuario);
     }
 }
