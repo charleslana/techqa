@@ -69,6 +69,7 @@
     "@playwright/test": "^1.50.1",
     "@types/node": "^22.13.4",
     "bcrypt": "^5.1.1",
+    "monocart-reporter": "^2.9.15",
     "ts-node": "^10.9.2"
   },
   "scripts": {
@@ -78,7 +79,9 @@
     "headed": "npx playwright test --headed",
     "ui": "npx playwright test --ui",
     "debug": "npx playwright test --debug",
-    "report": "npx playwright show-report"
+    "report": "npx playwright show-report",
+    "list": "npx playwright test --list",
+    "test-10": "npx playwright test --workers=10"
   },
   "keywords": [],
   "author": "",

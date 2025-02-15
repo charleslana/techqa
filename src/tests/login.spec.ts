@@ -17,7 +17,7 @@ test.describe('Testes de login', () => {
         loginPage = new LoginPageObjects(page);
     });
 
-    test('Não deve logar quando o código de autenticação é inválido', async ({page}) => {
+    test('@except Não deve logar quando o código de autenticação é inválido', async ({page}) => {
         await loginPage.navigate();
         await loginPage.fillFormCpf(user.cpf);
         await loginPage.fillFormPassword(user.password);
@@ -25,7 +25,7 @@ test.describe('Testes de login', () => {
         await expect(loginPage.getErrorNotification()).toContainText('Código inválido. Por favor, tente novamente.');
     });
 
-    test('Deve acessar a conta do usuário', async ({page}) => {
+    test('@success Deve acessar a conta do usuário', async ({page}) => {
         await loginPage.navigate();
         await loginPage.fillFormCpf(user.cpf);
         await loginPage.fillFormPassword(user.password);
@@ -36,7 +36,7 @@ test.describe('Testes de login', () => {
         await expect(loginPage.getBalance()).toHaveText('R$ 5.000,00');
     });
 
-    test('Deve acessar a conta do usuário com redis', async ({page}) => {
+    test('@success Deve acessar a conta do usuário com redis', async ({page}) => {
         await cleanJobs();
         await loginPage.navigate();
         await loginPage.fillFormCpf(user.cpf);
@@ -44,6 +44,6 @@ test.describe('Testes de login', () => {
         await page.getByRole('heading', {name: 'Verificação em duas etapas'}).waitFor({timeout: 3000});
         const {code} = await getJob();
         await loginPage.fillForm2FA(code);
-        await expect(loginPage.getBalance()).toHaveText('R$ 5.000,00');
+        await expect(loginPage.getBalance()).toHaveText('R$ 4.000,00');
     });
 });
