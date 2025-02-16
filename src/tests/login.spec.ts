@@ -44,6 +44,6 @@ test.describe('Testes de login', () => {
         await page.getByRole('heading', {name: 'Verificação em duas etapas'}).waitFor({timeout: 3000});
         const {code} = await getJob();
         await loginPage.fillForm2FA(code);
-        await expect(loginPage.getBalance()).toHaveText('R$ 4.000,00');
+        await expect(loginPage.getBalance()).toHaveText('R$ 5.000,00');
     });
 });
